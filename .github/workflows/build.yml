@@ -1,0 +1,54 @@
+name: Test and Build
+
+on:
+    push:
+        branches:
+            - main
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/IRealBook
+
+jobs:
+    docker-build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+                  token: ${{ secrets.GHCR_PAT }}
+
+            - name: Log in to the Container registry
+              uses: docker/login-action@v3
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata (tags, labels) for Docker
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ env.IMAGE_NAME }}
+                  flavor: latest=true
+                  tags: |
+                      # For main branch → "latest" + other tags
+                      type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+                      type=schedule,pattern={{date 'YYYYMMDD' tz='Europe/Berlin'}},enable=${{ github.ref == 'refs/heads/main' }}
+                      type=ref,event=tag,enable=${{ github.ref == 'refs/heads/main' }}
+                      type=sha,enable=${{ github.ref == 'refs/heads/main' }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:latest
+                  cache-to: type=inline

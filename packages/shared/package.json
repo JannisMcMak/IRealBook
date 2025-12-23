@@ -1,0 +1,12 @@
+{
+    "name": "@irealbook/shared",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./dist/index.js"
+    },
+    "scripts": {
+        "build": "tsc"
+    },
+    "version": "0.0.1"
+}

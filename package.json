@@ -1,0 +1,13 @@
+{
+  "name": "irealbook",
+  "private": true,
+  "version": "1.0.1",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build:deps": "npm run build -w @irealbook/shared && npm run build -w @irealbook/irealpro",
+    "build": "npm run build -w @irealbook/app && npm run build -w @irealbook/server"
+  },
+  "devDependencies": {}
+}

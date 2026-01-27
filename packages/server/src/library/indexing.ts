@@ -43,34 +43,6 @@ const normalizeName = (name: string): string => {
 	return titleCase(name);
 };
 
-/**
- * Parses all available books in the books folder and returns them as an array of Source objects.
- * Each key version is a separate Source object.
- */
-async function parseSources(): Promise<Source[]> {
-	type Book = {
-		Title: string;
-		ShortTitle: string;
-		Publisher: string;
-		Versions: string[];
-	};
-
-	const indexFile = await fs.promises.readFile(path.join(dataPath, 'books.json'));
-	const index: Book[] = JSON.parse(indexFile.toString());
-	const sources: Source[] = [];
-	for (const book of index) {
-		for (const version of book.Versions) {
-			const source = new Source();
-			source.name = book.Title + ' (' + version + ')';
-			source.shortName = book.ShortTitle;
-			source.publisher = book.Publisher;
-			source.key = version;
-			sources.push(source);
-		}
-	}
-	return sources;
-}
-
 type TuneIndex = {
 	name: string;
 	pageFrom: number;
@@ -82,6 +54,10 @@ type TuneIndex = {
 async function parseTunesOfSource(source: Source): Promise<TuneIndex[]> {
 	// Parse index CSV file with the page numbers
 	const indexFileName = getSourceFileName(source, 'csv');
+	if (!fs.existsSync(path.join(booksPath, indexFileName))) {
+		console.warn(`Index file not found for source ${source.name}: ${indexFileName}`);
+		return [];
+	}
 	const rows = parse(await fs.promises.readFile(path.join(booksPath, indexFileName)), {
 		delimiter: ',',
 		skip_empty_lines: true
@@ -139,16 +115,22 @@ async function loadChanges() {
 }
 
 /**
- * This function looks at all tunes in the books and inserts them into the database.
+ * This function looks at all tunes in the books and indexes them.
  * Metadata for each tune will be extracted from the standards folder.
+ * If the tune already exists in the given tune list,
+ * a new version corresponding to the current source will be appended.
+ * @param tunes List of existing tunes that should be updated / expanded
+ * @param sources List of sources from which new tunes should be indexed
  */
-export default async function indexTunes(): Promise<Tune[]> {
+export default async function indexTunes(tunes: Tune[], sources: Source[]): Promise<Tune[]> {
 	const startTime = Date.now();
 	const tuneMap = new Map<string, Tune>();
+	for (const tune of tunes) {
+		tuneMap.set(tune.title, tune);
+	}
 
 	const metadataMap = await loadMetadata();
 	const changesMap = await loadChanges();
-	const sources = await parseSources();
 	for (const source of sources) {
 		const tunesOfSource = await parseTunesOfSource(source);
 		for (const tuneIndex of tunesOfSource) {

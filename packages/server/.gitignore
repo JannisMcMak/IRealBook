@@ -25,6 +25,8 @@ dist-ssr
 
 *.db
 *.db-journal
-**/tunes/*
 fts.json
 .env
+uploads/
+*.csv
+*.pdf

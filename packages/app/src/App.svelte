@@ -134,7 +134,7 @@
 	<div class="mx-2 my-4 rounded-box bg-base-100 shadow-md">
 		{#if searchResults === null}
 			<div class="w-full py-12 text-center">
-				<p>Browse through 1600+ Jazz Standards.</p>
+				<p>Browse through Jazz Standards.</p>
 				<button class="btn mt-4 btn-primary" onclick={() => handleRandomTune()}>Random Tune</button>
 			</div>
 		{:else}

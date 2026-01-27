@@ -2,6 +2,7 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	Index,
 	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
@@ -10,6 +11,8 @@ import {
 export * from './mappings.js';
 
 @Entity()
+@Index(['name', 'key'], { unique: true })
+@Index(['shortName', 'key'], { unique: true })
 export class Source {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
@@ -69,7 +72,7 @@ export class TuneVersion {
 	id: string;
 
 	@ManyToOne(() => Tune, (tune) => tune.versions)
-	tune: Tune;
+	tune: Promise<Tune>;
 
 	@ManyToOne(() => Source, { cascade: true, eager: true })
 	source: Source;

@@ -1,6 +1,6 @@
 import { PDFDocument } from 'pdf-lib';
 import type { Source, TuneVersion } from '../model/index.js';
-import { booksPath, getSourceFileName, getTuneFilePath, tunesPath } from './utils.js';
+import { booksPath, getSourceFileName, getTuneFilePath } from './utils.js';
 import path from 'path';
 import fs from 'fs';
 
@@ -17,7 +17,7 @@ const loadSourcePDFs = async (sources: Source[]): Promise<Map<string, PDFDocumen
 				await fs.promises.readFile(path.join(booksPath, bookPDFName))
 			);
 			res.set(source.id, bookPDF);
-		} catch (e) {
+		} catch {
 			console.warn('Could not load book PDF for source ' + source.name);
 			continue;
 		}

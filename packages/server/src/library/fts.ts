@@ -36,7 +36,7 @@ const fts = {
 		fuse.setCollection(entries, index);
 	},
 	search(query: string, limit = 30): string[] {
-		let results = fuse.search(query, { limit });
+		const results = fuse.search(query, { limit });
 		return results.map((result) => result.item.id);
 	},
 	clear() {

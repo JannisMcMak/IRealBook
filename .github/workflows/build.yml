@@ -9,19 +9,33 @@ env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/IRealBook
 
+permissions:
+    contents: read
+    packages: write
+
 jobs:
-    docker-build:
+    test:
         runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install deps
+              run: npm ci
+
+            - name: Lint app
+              run: npm run -w @irealbook/app check && npm run -w @irealbook/app check
+
+            - name: Lint server
+              run: npm run -w @irealbook/server lint
+
+    docker-build:
+        needs: test
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
-              with:
-                  submodules: recursive
-                  token: ${{ secrets.GHCR_PAT }}
 
             - name: Log in to the Container registry
               uses: docker/login-action@v3

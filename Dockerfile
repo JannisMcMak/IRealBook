@@ -35,8 +35,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=app-builder /app/packages/app/dist ./public
 COPY packages/app/public ./public
 
-# Library
+# Copy Views & Library
 COPY packages/server/data ./data
+COPY packages/server/views ./views
 
 ENV NODE_ENV=production
 EXPOSE 3000

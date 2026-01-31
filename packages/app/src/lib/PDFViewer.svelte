@@ -29,7 +29,7 @@
 		const doc = await docManager?.provides
 			?.openDocumentUrl({ url: pdfURL, requestOptions: { headers: server.authHeader } })
 			.toPromise();
-		doc && docManager?.provides?.setActiveDocument(doc.documentId);
+		if (doc) docManager?.provides?.setActiveDocument(doc.documentId);
 	}
 
 	export async function closePDF() {

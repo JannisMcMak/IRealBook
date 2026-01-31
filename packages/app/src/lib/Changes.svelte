@@ -4,7 +4,6 @@
 		generateChordChart,
 		NO_ROOT,
 		type Annotation,
-		type AnnotationTokenType,
 		type BarlineTokenType,
 		type Cell,
 		type Chord

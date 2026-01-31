@@ -10,6 +10,7 @@
 	import auth from './utils/auth.svelte';
 	import VersionSelect from './lib/VersionSelect.svelte';
 	import Changes from './lib/Changes.svelte';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const TUNE_ID_SEARCH_PARAM = 'tuneID';
 
@@ -25,7 +26,7 @@
 			authModal?.show();
 			return;
 		}
-		const urlParams = new URLSearchParams(window.location.search);
+		const urlParams = new SvelteURLSearchParams(window.location.search);
 		const tuneIDValue = urlParams.get(TUNE_ID_SEARCH_PARAM);
 		if (tuneIDValue) {
 			await handleSelectTune(tuneIDValue);
@@ -72,11 +73,11 @@
 	const openTune = async (tune: TuneDTO) => {
 		selectedTune = tune;
 		selectedVersion = tune.versions[0];
-		documentURL && (await pdfViewer?.openPDF(documentURL));
+		if (documentURL) await pdfViewer?.openPDF(documentURL);
 		tuneModal?.show();
 
 		// Set query param
-		const urlParams = new URLSearchParams();
+		const urlParams = new SvelteURLSearchParams();
 		urlParams.set(TUNE_ID_SEARCH_PARAM, tune.id);
 		history.replaceState(null, '', '?' + urlParams.toString());
 	};
@@ -93,7 +94,7 @@
 	};
 	const handleSelectVersion = (version: TuneVersionDTO) => {
 		selectedVersion = version;
-		documentURL && pdfViewer?.openPDF(documentURL);
+		if (documentURL) pdfViewer?.openPDF(documentURL);
 		versionSelectOpened = false;
 	};
 </script>

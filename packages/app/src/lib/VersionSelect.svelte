@@ -26,7 +26,7 @@
 		{#each availableKeys as key}
 			<button
 				title={key}
-				class="btn join-item btn-square btn-soft tracking-[-0.2em]"
+				class="btn join-item btn-square tracking-[-0.2em] btn-soft"
 				class:btn-active={selectedKey === key}
 				class:btn-primary={key === 'C'}
 				class:btn-secondary={key === 'Bb'}
@@ -40,7 +40,7 @@
 					}
 				}}
 			>
-				{@html keyLabels[key]}
+				{keyLabels[key]}
 			</button>
 		{/each}
 	</div>

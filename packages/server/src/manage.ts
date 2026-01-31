@@ -1,5 +1,5 @@
 import multer from 'multer';
-import type { Express, Response } from 'express';
+import type { Express } from 'express';
 import { AppDataSource } from './data-source.js';
 import { mappings, Source, Tune, TuneVersion } from './model/index.js';
 import indexTunes from './library/indexing.js';
@@ -15,6 +15,7 @@ type ManagePageData = {
 	sourcesValidity: Record<string, boolean>;
 	tuneCount: number;
 	tuneVersionCount: number;
+	ftsSize: number;
 };
 
 export function applyManageRoutes(app: Express) {
@@ -128,7 +129,8 @@ export function applyManageRoutes(app: Express) {
 				versionsPerSource: {},
 				sourcesValidity: {},
 				tuneCount: await tuneRepo.count(),
-				tuneVersionCount: await tuneVersionRepo.count()
+				tuneVersionCount: await tuneVersionRepo.count(),
+				ftsSize: fts.size
 			};
 			for (const source of sources) {
 				data.versionsPerSource[source.id] = await tuneVersionRepo.count({
@@ -164,6 +166,23 @@ export async function reIndexTunes(source?: Source) {
 			await manager.save(tune);
 		}
 	});
+
+	// After indexing, the previously exploded PDFs become outdated
+	if (source) {
+		await AppDataSource.manager.update(
+			Source,
+			{ id: source.id },
+			{ lastIndexedAt: new Date(), lastExplodedAt: null }
+		);
+	} else {
+		await AppDataSource.manager.updateAll(Source, {
+			lastIndexedAt: new Date(),
+			lastExplodedAt: null
+		});
+		// Clear everything
+		fts.clear();
+		await fs.promises.rm(tunesPath, { recursive: true, force: true });
+	}
 	console.log(
 		`Saved ${tunes.length} tunes from ${sources.length} source(s) to DB in ${Date.now() - startTime} ms`
 	);
@@ -181,6 +200,11 @@ export async function reSplitPDFs(source?: Source) {
 		tuneVersions = await tuneVersionRepo.find();
 	}
 	await explodeTunes(tuneVersions);
+	if (source) {
+		await AppDataSource.manager.update(Source, { id: source.id }, { lastExplodedAt: new Date() });
+	} else {
+		await AppDataSource.manager.updateAll(Source, { lastExplodedAt: new Date() });
+	}
 }
 
 export async function rebuildFTSIndex() {

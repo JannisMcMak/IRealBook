@@ -31,6 +31,12 @@ export class Source {
 
 	@Column({ type: 'date', nullable: true })
 	publishDate: Date | null;
+
+	@Column({ type: 'datetime', nullable: true })
+	lastIndexedAt: Date | null;
+
+	@Column({ type: 'datetime', nullable: true })
+	lastExplodedAt: Date | null;
 }
 
 @Entity()

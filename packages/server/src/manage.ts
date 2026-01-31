@@ -189,15 +189,14 @@ export async function reIndexTunes(source?: Source) {
 }
 
 export async function reSplitPDFs(source?: Source) {
-	const tuneVersionRepo = AppDataSource.getRepository(TuneVersion);
 	let tuneVersions: TuneVersion[] = [];
 	if (source) {
 		// Extract only tune versions from single source
-		tuneVersions = await tuneVersionRepo.find({ where: { source } });
+		tuneVersions = await AppDataSource.manager.find(TuneVersion, { where: { source } });
 	} else {
 		// Re-do PDF extraction for everything
 		await fs.promises.rm(tunesPath, { recursive: true, force: true });
-		tuneVersions = await tuneVersionRepo.find();
+		tuneVersions = await AppDataSource.manager.find(TuneVersion);
 	}
 	await explodeTunes(tuneVersions);
 	if (source) {

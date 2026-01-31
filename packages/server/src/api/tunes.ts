@@ -21,8 +21,7 @@ const registerTuneRoutes = (router: Router) => {
 		}
 
 		// Fetch tunes from DB
-		const repo = AppDataSource.getRepository(Tune);
-		const tunes = await repo.find({
+		const tunes = await AppDataSource.manager.find(Tune, {
 			where: {
 				id: In(searchResults)
 			},
@@ -64,8 +63,7 @@ const registerTuneRoutes = (router: Router) => {
 			return res.status(400).end();
 		}
 
-		const repo = AppDataSource.getRepository(Tune);
-		const tune = await repo.findOneBy({
+		const tune = await AppDataSource.manager.findOneBy(Tune, {
 			id: tuneID
 		});
 		if (!tune) {

@@ -14,8 +14,7 @@ import { applyManageRoutes, rebuildFTSIndex, reIndexTunes, reSplitPDFs } from '.
 
 const runInitTasks = async () => {
 	const args = process.argv.slice(2);
-	const doIndex =
-		args.includes('--index') || (await AppDataSource.getRepository(Tune).count()) === 0;
+	const doIndex = args.includes('--index') || (await AppDataSource.manager.count(Tune)) === 0;
 	const doFTS = doIndex || args.includes('--fts') || !fts.snapshotExists();
 	const doExplode = doIndex || args.includes('--explode') || !(await tuneLibraryExists());
 

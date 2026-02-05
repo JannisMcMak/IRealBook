@@ -187,7 +187,7 @@
 
 		<button
 			onclick={() => handleDismissTune()}
-			class="btn absolute top-2 right-2 btn-circle btn-lg btn-primary"
+			class="btn absolute top-2 right-2 btn-circle btn-sm btn-primary"
 			aria-label="Close"
 		>
 			<i class="icon-[mdi--close]"></i>

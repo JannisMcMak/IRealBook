@@ -15,7 +15,7 @@
 
 {#snippet actionBtn(action: Action)}
 	<button
-		class="btn btn-circle btn-lg"
+		class="btn btn-circle btn-sm"
 		onclick={action.disabled ? undefined : action.onClick}
 		aria-label={action.label}
 		aria-disabled={!!action.disabled}
@@ -26,20 +26,20 @@
 {/snippet}
 
 <div class="fab">
-	<div tabindex="0" role="button" class="btn btn-circle btn-lg btn-primary">
+	<div tabindex="0" role="button" class="btn btn-circle btn-sm btn-primary">
 		<i class="icon-[mdi--menu]"></i>
 	</div>
 
 	<div class="fab-close">
-		<span class="rounded-box bg-base-200 p-1.5">Close</span>
-		<span class="btn btn-circle btn-lg btn-error">
+		<span class="rounded-box bg-base-200 p-1 text-xs">Close</span>
+		<span class="btn btn-circle btn-sm btn-error">
 			<i class="icon-[mdi--close]"></i>
 		</span>
 	</div>
 
 	{#each actions as action}
 		<div>
-			<span class="rounded-box bg-base-200 p-1.5" class:opacity-50={!!action.disabled}
+			<span class="rounded-box bg-base-200 p-1 text-xs" class:opacity-50={!!action.disabled}
 				>{action.label}</span
 			>
 			{#if action.indicator}

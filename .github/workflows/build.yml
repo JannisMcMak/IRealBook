@@ -27,7 +27,7 @@ jobs:
               run: npm run build:deps
 
             - name: Lint app
-              run: npm run -w @irealbook/app check && npm run -w @irealbook/app check
+              run: npm run -w @irealbook/app check && npm run -w @irealbook/app lint
 
             - name: Lint server
               run: npm run -w @irealbook/server lint

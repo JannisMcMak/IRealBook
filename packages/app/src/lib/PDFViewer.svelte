@@ -19,7 +19,6 @@
 	import { RenderLayer, RenderPluginPackage } from '@embedpdf/plugin-render/svelte';
 	import {
 		FullscreenPluginPackage,
-		useFullscreen,
 		useFullscreenCapability
 	} from '@embedpdf/plugin-fullscreen/svelte';
 	import server from '../utils/server';

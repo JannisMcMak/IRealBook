@@ -24,8 +24,8 @@ docker volume create irealbook-data
 docker run -d \
   --name irealbook \
   -p 3000:3000 \
-  -e JWT_SECRET change_this_to_a_long_random_string \
-  -e AUTH_PASSWORD supersecretpassword \
+  -e JWT_SECRET=change_this_to_a_long_random_string \
+  -e AUTH_PASSWORD=supersecretpassword \
   -v /app/data \
   ghcr.io/jannismcmak/irealbook:latest
 ```

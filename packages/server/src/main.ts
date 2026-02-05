@@ -56,6 +56,11 @@ app.get('/', (_, res) => {
 	res.sendFile(path.resolve(process.cwd(), 'public', 'index.html'));
 });
 
+// Health check
+app.get('/health', (_, res) => {
+	res.json({ status: 'ok' });
+});
+
 AppDataSource.initialize()
 	.then(() => {
 		app.listen(PORT, () => {

@@ -27,9 +27,12 @@ WORKDIR /app
 
 # Server runtime files
 COPY --from=server-builder /app/packages/server/dist ./dist
-COPY --from=server-builder /app/packages/server/package*.json ./
 COPY --from=deps /app/packages/irealpro /app/packages/irealpro
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/shared /app/packages/shared
+
+COPY --from=server-builder /app/packages/server/package*.json /app/packages/server/
+COPY --from=deps /app/package*.json /app
+RUN npm -w @irealbook/server ci
 
 # App build → server public folder
 COPY --from=app-builder /app/packages/app/dist ./public

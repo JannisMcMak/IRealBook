@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import type { Source, Tune, TuneVersion } from '../model/index.js';
 
+export const seedPath = path.join('seed');
 export const dataPath = path.join('data');
 export const booksPath = path.join(dataPath, 'books');
 export const tunesPath = path.join(dataPath, 'tunes');

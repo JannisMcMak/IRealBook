@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Source, Tune, TuneVersion } from '../model/index.js';
 import path from 'path';
 import { parse } from 'csv-parse/sync';
-import { booksPath, dataPath, getSourceFileName } from './utils.js';
+import { booksPath, getSourceFileName, seedPath } from './utils.js';
 import { parseIRealProPlaylist } from '@irealbook/irealpro';
 
 const titleCase = (str: string): string => {
@@ -95,7 +95,7 @@ type TuneMetadata = {
 	TimeSignature: string;
 };
 async function loadMetadata(): Promise<Map<string, TuneMetadata>> {
-	const metadataFile = await fs.promises.readFile(path.join(dataPath, 'standards.json'));
+	const metadataFile = await fs.promises.readFile(path.join(seedPath, 'standards.json'));
 	const data: TuneMetadata[] = JSON.parse(metadataFile.toString());
 	const metadata = new Map<string, TuneMetadata>();
 	for (const tune of data) {
@@ -105,7 +105,7 @@ async function loadMetadata(): Promise<Map<string, TuneMetadata>> {
 }
 
 async function loadChanges() {
-	const dataFile = await fs.promises.readFile(path.join(dataPath, 'irealpro.txt'));
+	const dataFile = await fs.promises.readFile(path.join(seedPath, 'irealpro.txt'));
 	const data = parseIRealProPlaylist(dataFile.toString());
 	const metadata = new Map<string, string>();
 	for (const tune of data) {

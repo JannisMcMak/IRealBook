@@ -36,7 +36,7 @@ COPY --from=app-builder /app/packages/app/dist ./public
 COPY packages/app/public ./public
 
 # Copy Views & Library
-COPY packages/server/data ./data
+COPY packages/server/seed ./seed
 COPY packages/server/views ./views
 
 ENV NODE_ENV=production

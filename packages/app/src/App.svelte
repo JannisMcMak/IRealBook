@@ -194,7 +194,11 @@
 		</button>
 		<Fab
 			actions={[
-				{ label: 'Fullscreen', iconClass: 'icon-[mdi--fullscreen]', onClick: () => {} },
+				{
+					label: 'Fullscreen',
+					iconClass: 'icon-[mdi--fullscreen]',
+					onClick: () => pdfViewer?.fullscreen()
+				},
 				{
 					label: 'Changes',
 					iconClass: 'icon-[mdi--piano]',

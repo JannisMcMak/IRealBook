@@ -17,6 +17,11 @@
 	import { ZoomMode, ZoomPluginPackage, ZoomGestureWrapper } from '@embedpdf/plugin-zoom/svelte';
 	import { PanPluginPackage } from '@embedpdf/plugin-pan/svelte';
 	import { RenderLayer, RenderPluginPackage } from '@embedpdf/plugin-render/svelte';
+	import {
+		FullscreenPluginPackage,
+		useFullscreen,
+		useFullscreenCapability
+	} from '@embedpdf/plugin-fullscreen/svelte';
 	import server from '../utils/server';
 
 	interface Props {
@@ -35,14 +40,21 @@
 	export async function closePDF() {
 		await docManager?.provides?.closeAllDocuments().toPromise();
 	}
+	export function fullscreen() {
+		// For Safari on IOS, this is only available on iPad, not iPhone (also not on iPad when added to home screen).
+		// See https://caniuse.com/mdn-api_element_requestfullscreen
+		fullscreenPlugin?.provides?.enableFullscreen();
+	}
 
 	// PDF engine
 	const pdfEngine = usePdfiumEngine();
 	let docManager: ReturnType<typeof useDocumentManagerCapability> | undefined = $state();
+	let fullscreenPlugin: ReturnType<typeof useFullscreenCapability> | undefined = $state();
 	$effect(() => {
-		// Wait for engine to load, then create document manager
+		// Wait for engine to load, then create document manager and plugins
 		if (!pdfEngine.isLoading) {
 			docManager = useDocumentManagerCapability();
+			fullscreenPlugin = useFullscreenCapability();
 		}
 	});
 
@@ -55,7 +67,8 @@
 		createPluginRegistration(ZoomPluginPackage, {
 			defaultZoomLevel: ZoomMode.FitWidth
 		}),
-		createPluginRegistration(PanPluginPackage, { defaultMode: 'mobile' })
+		createPluginRegistration(PanPluginPackage, { defaultMode: 'mobile' }),
+		createPluginRegistration(FullscreenPluginPackage)
 	];
 </script>
 

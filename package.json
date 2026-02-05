@@ -1,13 +1,16 @@
 {
-  "name": "irealbook",
-  "private": true,
-  "version": "1.0.1",
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "build:deps": "npm run build -w @irealbook/shared && npm run build -w @irealbook/irealpro",
-    "build": "npm run build -w @irealbook/app && npm run build -w @irealbook/server"
-  },
-  "devDependencies": {}
+    "name": "irealbook",
+    "private": true,
+    "version": "1.1.1",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "build:deps": "npm run build -w @irealbook/shared && npm run build -w @irealbook/irealpro",
+        "build": "npm run build -w @irealbook/app && npm run build -w @irealbook/server",
+        "version:patch": "npm --include-workspace-root --workspaces version patch",
+        "version:minor": "npm --include-workspace-root --workspaces version minor",
+        "version:major": "npm --include-workspace-root --workspaces version major"
+    },
+    "devDependencies": {}
 }

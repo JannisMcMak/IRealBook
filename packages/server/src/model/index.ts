@@ -80,7 +80,7 @@ export class TuneVersion {
 	@ManyToOne(() => Tune, (tune) => tune.versions)
 	tune: Promise<Tune>;
 
-	@ManyToOne(() => Source, { cascade: true, eager: true })
+	@ManyToOne(() => Source, { eager: true, onDelete: 'CASCADE' })
 	source: Source;
 
 	@Column({ type: 'int' })

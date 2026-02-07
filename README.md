@@ -20,7 +20,6 @@
 A Docker image is published on the GitHub Container Registry. The data is stored in `/app/data` inside the container, which can be mounted to a Docker volume for persistance.
 
 ```
-docker volume create irealbook-data
 docker run -d \
   --name irealbook \
   -p 3000:3000 \

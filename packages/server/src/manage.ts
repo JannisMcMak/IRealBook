@@ -33,6 +33,8 @@ export function applyManageRoutes(app: Express) {
 				{ name: 'index', maxCount: 1 }
 			]),
 			async (req, res) => {
+				req.setTimeout(0); // Disable timeout
+
 				const action = req.url.split('?').at(1) || '';
 				if (action === 'addSource') {
 					// User submitted a new source

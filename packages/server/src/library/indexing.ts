@@ -24,10 +24,13 @@ const titleCase = (str: string): string => {
 
 /** Normalizes a tune name for storing in the database. */
 const normalizeName = (name: string): string => {
+	name = name.trim();
+
 	// "A" should be at the start
 	if (name.endsWith(', A') || name.endsWith('(A)')) {
 		name = 'A ' + name.slice(0, -3);
 	}
+
 	// "The" should be at the end according to IRealPro naming conventions
 	// https://www.irealpro.com/ireal-pro-custom-chord-chart-protocol
 	if (name.startsWith('The ')) {
@@ -37,8 +40,14 @@ const normalizeName = (name: string): string => {
 	if (name.endsWith(' The') && !name.endsWith(', The')) {
 		name = name.slice(0, -4) + ', The';
 	}
+	// "The" could also be in brackets
+	if (name.endsWith(' (The)')) {
+		name = name.slice(0, -6) + ', The';
+	}
+
 	// Replace "&" with "and"
 	name = name.replace(/&/g, 'and');
+
 	// Convert to title case
 	return titleCase(name);
 };

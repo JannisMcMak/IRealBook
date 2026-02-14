@@ -200,6 +200,11 @@
 					onClick: () => pdfViewer?.fullscreen()
 				},
 				{
+					label: 'Download',
+					iconClass: 'icon-[mdi--download]',
+					onClick: () => pdfViewer?.download()
+				},
+				{
 					label: 'Changes',
 					iconClass: 'icon-[mdi--piano]',
 					onClick: () => changesModal?.show(),

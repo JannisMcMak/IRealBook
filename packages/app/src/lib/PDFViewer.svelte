@@ -21,6 +21,7 @@
 		FullscreenPluginPackage,
 		useFullscreenCapability
 	} from '@embedpdf/plugin-fullscreen/svelte';
+	import { ExportPluginPackage, useExportCapability } from '@embedpdf/plugin-export/svelte';
 	import server from '../utils/server';
 
 	interface Props {
@@ -44,16 +45,21 @@
 		// See https://caniuse.com/mdn-api_element_requestfullscreen
 		fullscreenPlugin?.provides?.enableFullscreen();
 	}
+	export function download() {
+		exportPlugin?.provides?.download();
+	}
 
 	// PDF engine
 	const pdfEngine = usePdfiumEngine();
 	let docManager: ReturnType<typeof useDocumentManagerCapability> | undefined = $state();
 	let fullscreenPlugin: ReturnType<typeof useFullscreenCapability> | undefined = $state();
+	let exportPlugin: ReturnType<typeof useExportCapability> | undefined = $state();
 	$effect(() => {
 		// Wait for engine to load, then create document manager and plugins
 		if (!pdfEngine.isLoading) {
 			docManager = useDocumentManagerCapability();
 			fullscreenPlugin = useFullscreenCapability();
+			exportPlugin = useExportCapability();
 		}
 	});
 
@@ -67,7 +73,8 @@
 			defaultZoomLevel: ZoomMode.FitWidth
 		}),
 		createPluginRegistration(PanPluginPackage, { defaultMode: 'mobile' }),
-		createPluginRegistration(FullscreenPluginPackage)
+		createPluginRegistration(FullscreenPluginPackage),
+		createPluginRegistration(ExportPluginPackage)
 	];
 </script>
 

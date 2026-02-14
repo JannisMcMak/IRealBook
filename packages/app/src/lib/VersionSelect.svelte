@@ -45,7 +45,7 @@
 		{/each}
 	</div>
 
-	<ul class="menu w-full p-0 mt-1">
+	<ul class="menu mt-1 w-full p-0">
 		<li class="menu-title">Versions ({groupedTuneVersions.get(selectedKey)?.length || 0})</li>
 		{#each groupedTuneVersions.get(selectedKey) as version}
 			<li>

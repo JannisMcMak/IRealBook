@@ -25,7 +25,7 @@ const titleCase = (str: string): string => {
 /** Normalizes a tune name for storing in the database. */
 const normalizeName = (name: string): string => {
 	// "A" should be at the start
-	if (name.endsWith(', A')) {
+	if (name.endsWith(', A') || name.endsWith('(A)')) {
 		name = 'A ' + name.slice(0, -3);
 	}
 	// "The" should be at the end according to IRealPro naming conventions
@@ -68,6 +68,7 @@ async function parseTunesOfSource(source: Source): Promise<TuneIndex[]> {
 	const tunes: TuneIndex[] = [];
 
 	for (const row of rows) {
+		if (row.length < 3) continue;
 		let name = (row[0] as string).trim();
 		if (!name) continue;
 		if (name.startsWith('#') || keywordBlacklist.some((x) => name.toLowerCase().includes(x))) {
@@ -132,7 +133,13 @@ export default async function indexTunes(tunes: Tune[], sources: Source[]): Prom
 	const metadataMap = await loadMetadata();
 	const changesMap = await loadChanges();
 	for (const source of sources) {
-		const tunesOfSource = await parseTunesOfSource(source);
+		let tunesOfSource: TuneIndex[];
+		try {
+			tunesOfSource = await parseTunesOfSource(source);
+		} catch (e) {
+			console.error(`Failed to parse index for source ${source.name}: ${e}`);
+			continue;
+		}
 		for (const tuneIndex of tunesOfSource) {
 			// Check if tune already exists
 			if (!tuneMap.has(tuneIndex.name)) {

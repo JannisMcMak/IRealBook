@@ -36,7 +36,7 @@ html
               input(name="shortName" placeholder="RB1", required)
           div.grid
             label Publisher
-              input(name="publisher" placeholder="Hal Leonard", required)
+              input(name="publisher" placeholder="Hal Leonard")
             label Key
               select(name="key", required) 
                 option C
@@ -58,6 +58,7 @@ html
       if sources
         article
           h3= "Available Sources (" + sources.length + ")"
+
           table 
             thead 
               tr 
@@ -104,6 +105,8 @@ html
                       form(method="post" enctype="multipart/form-data" action="?deleteSource")
                         input(type="hidden" name="id", value=source.id)
                         button.outline.contrast Delete
+          form(method="post" enctype="multipart/form-data" action="?deleteSources" style={"text-align": "right"})
+            button.contrast Delete All
 
     script.
       const rtf = new Intl.RelativeTimeFormat("en", { style: "short", numeric: "auto" });

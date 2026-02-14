@@ -71,6 +71,8 @@ There are various public projects that provide lists of indeces for many Real/Fa
 - https://www.seventhstring.com/fbindex.html
 - https://github.com/aspiers/book-indices
 - https://github.com/trebb/realbook
+- https://diystompboxes.com/unrealbook/csvindexes/
+- https://github.com/mikeln/musicindex/tree/master/ForScore
 
 ### Index table format
 

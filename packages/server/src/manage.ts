@@ -52,14 +52,7 @@ export function applyManageRoutes(app: Express) {
 					} else {
 						return res.sendStatus(400);
 					}
-					if (
-						!book ||
-						!indexTable ||
-						!data.name ||
-						!data.shortName ||
-						!data.publisher ||
-						!data.key
-					) {
+					if (!book || !indexTable || !data.name || !data.shortName || !data.key) {
 						return res.sendStatus(400);
 					}
 					const newSource = new Source();
@@ -96,6 +89,14 @@ export function applyManageRoutes(app: Express) {
 						);
 					}
 					await sourceRepo.remove(source);
+				} else if (action === 'deleteSources') {
+					// Delete all sources action
+					await sourceRepo.clear();
+					await tuneVersionRepo.clear();
+					await tuneRepo.clear();
+					await fs.promises.rm(path.join(booksPath), { recursive: true, force: true });
+					await fs.promises.rm(path.join(tunesPath), { recursive: true, force: true });
+					await rebuildFTSIndex();
 				} else if (action === 'indexTunes') {
 					const id: string | undefined = req.body?.id;
 					if (!id) {

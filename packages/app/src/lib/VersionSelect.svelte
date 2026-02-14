@@ -45,7 +45,7 @@
 		{/each}
 	</div>
 
-	<ul class="menu w-full">
+	<ul class="menu w-full p-0 mt-1">
 		<li class="menu-title">Versions ({groupedTuneVersions.get(selectedKey)?.length || 0})</li>
 		{#each groupedTuneVersions.get(selectedKey) as version}
 			<li>
@@ -53,7 +53,7 @@
 					title={version.source.name}
 					disabled={version.id === selectedVersion?.id}
 					class:menu-active={selectedVersion?.id === version.id}
-					onclick={() => onSelectVersion?.(version)}>{version.source.shortName}</button
+					onclick={() => onSelectVersion?.(version)}>{version.source.name}</button
 				>
 			</li>
 		{:else}

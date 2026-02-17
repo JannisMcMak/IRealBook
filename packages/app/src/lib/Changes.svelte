@@ -64,31 +64,34 @@
 	{@const accidentalPart = noteStr.at(1)}
 	{@const accidental =
 		accidentalPart === undefined ? '' : accidentalPart === '#' ? '\u266f' : '\u266d'}
-	<span>
+	<span class="chord-font relative">
 		{letter}{#if accidental}
-			<span class="music-font inline-block -translate-y-2.5 text-[80%]">
+			<span class="absolute -top-3 left-2 text-[60%]">
 				{accidental}
 			</span>
 		{/if}
 	</span>
 {/snippet}
-{#snippet chordModifiers(modifiers: string, withAccidental: boolean = false)}
-	{@const formatted = modifiers
-		.replace('-', 'm') // Minor
-		.replace('^', '\u2206') // Major (7th)
-		.replace('h', '\u2300') // Half-diminished
-		.replace(/b/g, '\u266d') // Flat
-		.replace(/#/g, '\u266f')}
-	<span class="music-font translate-y-1 text-[55%]" class:-translate-x-1={withAccidental}>
-		{formatted}
+{#snippet chordModifiers(modifiers: string)}
+	<span class="chord-font tracking-0 translate-y-1 text-[65%]">
+		{#each modifiers.split('') as mod}
+			<span class:text-[85%]={mod !== 'm'} class:-mx-0.5={mod === 'b'}>
+				{mod
+					.replace('-', 'm') // Minor
+					.replace('^', '\u2206') // Major (7th)
+					.replace('h', '\u2300') // Half-diminished
+					.replace(/b/g, '\u266d') // Flat
+					.replace(/#/g, '\u266f')}
+			</span>
+		{/each}
 	</span>
 {/snippet}
 {#snippet chord(c: Chord)}
-	<div class="music-font flex items-center whitespace-nowrap" class:scale-x-70={c.small}>
+	<div class="chord-font flex items-center whitespace-nowrap" class:scale-x-70={c.small}>
 		{#if c.note !== NO_ROOT}
 			{@render note(c.note)}
 		{/if}
-		{@render chordModifiers(c.modifiers, c.note.includes('#') || c.note.includes('b'))}
+		{@render chordModifiers(c.modifiers)}
 	</div>
 {/snippet}
 
@@ -135,15 +138,13 @@
 {/snippet}
 
 {#snippet barline(token: BarlineTokenType)}
-	{@const isLeft = token === 'BarLeft' || token === 'DoubleBarLeft'}
-	{@const veryLeft = token === 'StartRepeat'}
-	{@const veryRight = token === 'EndRepeat'}
 	<span
 		class="music-font absolute top-1.5"
-		class:-left-1={isLeft}
-		class:-left-2.5={veryLeft}
-		class:-right-2={!isLeft && !veryRight}
-		class:-right-3={veryRight}
+		class:-left-1={token === 'BarLeft'}
+		class:-left-1.5={token === 'DoubleBarLeft'}
+		class:-left-3={token === 'StartRepeat'}
+		class:-right-3={token === 'EndRepeat'}
+		class:-right-2={token === 'DoubleBarRight' || token === 'EndBarRight'}
 	>
 		{BarlineChars[token]}
 	</span>
@@ -151,7 +152,7 @@
 
 {#if chart}
 	<h3 class="text-xl font-bold">Changes</h3>
-	<div class="mt-4 space-y-4 text-xl leading-6! select-none">
+	<div class="mt-4 space-y-4 text-[1.5em] leading-6! select-none">
 		{#each cells as row}
 			<div class="grid grid-cols-16" class:mt-8={row.some((c) => c.verticalSpacer)}>
 				{#each row as cell, i}
@@ -169,9 +170,9 @@
 							{/if}
 							<!-- Other cell content -->
 						{:else if cell.content === 'BarRepeat'}
-							<span class="absolute top-2.5 -right-2 text-[120%]">&#x1D10E;</span>
+							<span class="music-font absolute top-2.5 -right-2 text-[120%]">&#x1D10E;</span>
 						{:else if cell.content === 'DoubleBarRepeat'}
-							<span class="absolute top-2.5 -right-2 text-[120%]">&#x1D10F;</span>
+							<span class="music-font absolute top-2.5 -right-2 text-[120%]">&#x1D10F;</span>
 						{/if}
 
 						<!-- Annotations -->

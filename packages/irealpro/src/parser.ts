@@ -8,6 +8,8 @@ import {
     type AnnotationTokenType,
 } from "./types.js";
 
+// Format Documentation: https://github.com/infojunkie/ireal-musicxml/blob/main/doc/irealpro.md
+
 /**
  * The RegExp for a complete chord. The match array contains:
  * 1 - the base note
@@ -207,6 +209,8 @@ function parseAnnotation(token: Token): Annotation {
     } else if (token.type === "Section") {
         value = token.value.replace("*", "");
         if (value === "i") value = "in";
+    } else if (token.type === "RepeatMarker") {
+        value = token.value.replace("N", "");
     } else {
         value = undefined;
     }

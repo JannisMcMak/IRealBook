@@ -15,7 +15,7 @@
 
 {#snippet actionBtn(action: Action)}
 	<button
-		class="btn btn-circle btn-sm"
+		class="btn btn-circle btn-md"
 		onclick={action.disabled ? undefined : action.onClick}
 		aria-label={action.label}
 		aria-disabled={!!action.disabled}
@@ -26,13 +26,13 @@
 {/snippet}
 
 <div class="fab">
-	<div tabindex="0" role="button" class="btn btn-circle btn-sm btn-primary">
+	<div tabindex="0" role="button" class="btn btn-circle btn-md btn-primary">
 		<i class="icon-[mdi--menu]"></i>
 	</div>
 
 	<div class="fab-close">
 		<span class="rounded-box bg-base-200 p-1 text-xs">Close</span>
-		<span class="btn btn-circle btn-sm btn-error">
+		<span class="btn btn-circle btn-md btn-error">
 			<i class="icon-[mdi--close]"></i>
 		</span>
 	</div>

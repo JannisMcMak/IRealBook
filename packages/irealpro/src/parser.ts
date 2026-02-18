@@ -211,6 +211,8 @@ function parseAnnotation(token: Token): Annotation {
         if (value === "i") value = "in";
     } else if (token.type === "RepeatMarker") {
         value = token.value.replace("N", "");
+    } else if (token.type === "TimeSignature") {
+        value = token.value.replace("T", "");
     } else {
         value = undefined;
     }

@@ -125,7 +125,7 @@
 			{/if}
 		</span>
 	{:else if annot.type === 'Segno' || annot.type === 'Coda' || annot.type === 'Fermata'}
-		<span class="absolute -top-3 left-2">
+		<span class="music-font absolute -top-3 left-2">
 			{#if annot.type === 'Segno'}
 				&#x1D10B;
 			{:else if annot.type === 'Coda'}

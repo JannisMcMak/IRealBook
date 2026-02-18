@@ -65,10 +65,16 @@
 	{@const accidental =
 		accidentalPart === undefined ? '' : accidentalPart === '#' ? '\u266f' : '\u266d'}
 	<span class="chord-font relative">
-		{letter}{#if accidental}
-			<span class="absolute -top-3 left-2 text-[60%]">
-				{accidental}
-			</span>
+		{#if letter === 'p'}
+			<span class="inline-block translate-x-2 scale-x-125 scale-y-75"> / </span>
+		{:else if letter === 'n'}
+			<span class="text-[80%]"> N.C. </span>
+		{:else if letter !== NO_ROOT}
+			{letter}{#if accidental}
+				<span class="absolute -top-3 left-2 text-[60%]">
+					{accidental}
+				</span>
+			{/if}
 		{/if}
 	</span>
 {/snippet}
@@ -88,9 +94,7 @@
 {/snippet}
 {#snippet chord(c: Chord)}
 	<div class="chord-font flex items-center whitespace-nowrap" class:scale-x-70={c.small}>
-		{#if c.note !== NO_ROOT}
-			{@render note(c.note)}
-		{/if}
+		{@render note(c.note)}
 		{@render chordModifiers(c.modifiers)}
 	</div>
 {/snippet}

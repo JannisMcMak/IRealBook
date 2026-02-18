@@ -17,7 +17,7 @@ import {
  * 3 - any comments (may be e.g. add, sub, or private stuff)
  * 4 - the "over" part starting with a slash
  */
-const CHORD_REGEX = /^([A-GWn][b#]?)((?:sus|alt|add|[\+\-\^\dhob#])*)(\*.+?\*)*(\/[A-G][#b]?)?/;
+const CHORD_REGEX = /^([A-GWnp][b#]?)((?:sus|alt|add|[\+\-\^\dhob#])*)(\*.+?\*)*(\/[A-G][#b]?)?/;
 
 const TOKEN_REGEX: Partial<Record<TokenType, RegExp>> = {
     Section: /^\*[a-zA-Z]/,

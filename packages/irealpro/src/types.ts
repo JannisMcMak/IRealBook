@@ -56,8 +56,13 @@ export type Annotation = {
 
 export const NO_ROOT = "W";
 export type Chord = {
-    /** (Root) note of the chord, e.g. "F", "Eb" or "G#". "W" for no root." */
-    note: string;
+    /**
+     * (Root) note of the chord, e.g. "F", "Eb" or "G#".
+     * "W" = no root
+     * "n" = "N.C."
+     * "p" = slash
+     */
+    note: "W" | "n" | "p" | string;
     modifiers: string;
     over: string | null;
     small: boolean;

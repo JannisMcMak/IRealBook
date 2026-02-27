@@ -132,11 +132,20 @@
 	<Navbar title="IRealBook" version={__APP_VERSION__}>
 		<Searchbar onDebouncedInput={handleSearchInput} placeholder="Search for tunes..." />
 	</Navbar>
-	<div class="mx-2 my-4 rounded-box bg-base-100 shadow-md">
+	<div class="mx-2 my-4 rounded-box bg-base-100 shadow-md border border-base-200">
 		{#if searchResults === null}
-			<div class="w-full py-12 text-center">
-				<p>Browse through Jazz Standards.</p>
-				<button class="btn mt-4 btn-primary" onclick={() => handleRandomTune()}>Random Tune</button>
+			<div class="hero rounded-box relative overflow-hidden bg-base-100 py-16">
+				<i class="icon-[mdi--music-clef-treble] pointer-events-none absolute -bottom-10 -right-10 text-[15rem] opacity-5"></i>
+				<div class="hero-content text-center">
+					<div class="max-w-md z-10">
+						<h1 class="text-4xl font-bold">Welcome to IRealBook</h1>
+						<p class="py-4 opacity-80">Browse and search through a vast library of Jazz Standards.</p>
+						<button class="btn btn-primary btn-wide group mt-4 shadow-lg shadow-primary/20" onclick={() => handleRandomTune()}>
+							<i class="icon-[mdi--shuffle-variant] text-xl transition-transform group-hover:rotate-12"></i>
+							Random Tune
+						</button>
+					</div>
+				</div>
 			</div>
 		{:else}
 			<ul class="list join join-vertical w-full">

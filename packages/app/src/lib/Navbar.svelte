@@ -11,18 +11,23 @@
 	const { title, version, start, end, children }: Props = $props();
 </script>
 
-<div class="sticky top-0 z-50 rounded-b-box bg-base-100/80 backdrop-blur-xl shadow-md border-b border-base-200/50">
+<div
+	class="sticky top-0 z-50 rounded-b-box border-b border-base-200/50 bg-base-100/80 shadow-md backdrop-blur-xl"
+>
 	<div class="navbar">
 		{#if start}
 			<div class="flex-none">
 				{@render start()}
 			</div>
 		{/if}
-		<div class="flex-1 flex items-center gap-2 pl-2">
-		<div class="size-9 bg-primary/10 rounded-box flex items-center justify-center">
-			<i class="icon-[mdi--music-note] text-xl text-primary"></i>
-		</div>
-			<span class="text-xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">{title}</span>
+		<div class="flex flex-1 items-center gap-2 pl-2">
+			<div class="flex size-9 items-center justify-center rounded-box bg-primary/10">
+				<i class="text-background icon-[mdi--music-note] text-primary"></i>
+			</div>
+			<span
+				class="bg-linear-to-r from-primary to-info bg-clip-text text-xl font-bold text-transparent"
+				>{title}</span
+			>
 			{#if version}
 				<span class="text-sm font-light brightness-80">v{version}</span>
 			{/if}

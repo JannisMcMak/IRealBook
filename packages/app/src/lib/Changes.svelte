@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { TuneDTO } from '@irealbook/shared';
 	import {
-		generateChordChart,
 		NO_ROOT,
 		type Annotation,
 		type BarlineTokenType,
 		type Cell,
 		type Chord
 	} from '@irealbook/irealpro';
+	import { ChordChart } from '../utils/chart.svelte';
 
 	const CELLS_PER_ROW = 16;
 
@@ -26,17 +26,7 @@
 	let { tune }: Props = $props();
 
 	// Generate chord chart from tune
-	const chart = $derived(
-		tune?.changes
-			? generateChordChart({
-					title: tune.title,
-					composer: tune.artist ?? '',
-					key: tune.key ?? '',
-					style: '',
-					rawMusic: tune.changes
-				})
-			: null
-	);
+	let chart = $derived(tune ? new ChordChart(tune) : null);
 	// Group cells into rows
 	const cells = $derived.by(() => {
 		if (!chart) return [];
@@ -155,7 +145,26 @@
 {/snippet}
 
 {#if chart}
-	<h3 class="text-xl font-bold">Changes</h3>
+	<div class="flex flex-wrap items-center gap-4">
+		<h3 class="text-xl font-bold">Changes</h3>
+		<div class="flex items-center gap-2">
+			<span class="text-sm font-semibold opacity-70">Key:</span>
+			<button class="btn btn-circle btn-ghost btn-sm" onclick={() => chart?.transposeDown()}>
+				-
+			</button>
+			<span class="w-8 text-center">
+				{chart.currentKey}
+			</span>
+			<button class="btn btn-circle btn-ghost btn-sm" onclick={() => chart.transposeUp()}>
+				+
+			</button>
+			{#if chart.currentKey !== chart.originalKey}
+				<button class="btn btn-ghost btn-sm" onclick={() => chart?.resetTransposition()}>
+					Reset
+				</button>
+			{/if}
+		</div>
+	</div>
 	<div class="mt-4 space-y-4 text-[1.5em] leading-6! select-none">
 		{#each cells as row}
 			<div class="grid grid-cols-16" class:mt-8={row.some((c) => c.verticalSpacer)}>

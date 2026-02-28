@@ -1,14 +1,9 @@
-import { ChordChart } from "./chart.js";
-import parseIRealProChords from "./parser.js";
+export * from "./types.js";
+export * from "./parser.js";
 import type { TuneMetadata } from "./types.js";
 import { unscramble } from "./unscramble.js";
-export * from "./types.js";
 
 const musicPrefix = "1r34LbKcu7";
-
-export function generateChordChart(tune: TuneMetadata): ChordChart {
-    return new ChordChart(parseIRealProChords(tune.rawMusic!), tune);
-}
 
 export function parseIRealProTune(raw: string): TuneMetadata {
     // Metadata is separated by = (sometimes empty)

@@ -28,7 +28,7 @@ const TOKEN_REGEX: Partial<Record<TokenType, RegExp>> = {
     AlternateChord: /^(\(.*?\))/,
 };
 
-export default function parseIRealProChords(raw: string): Cell[] {
+export function parseIRealProChords(raw: string): Cell[] {
     const tokens = tokenize(raw);
     return parse(tokens);
 }
